@@ -29,7 +29,8 @@ public class WeaponSelector : MonoBehaviour
             weaponMov.SetRotSpeed(weapons[i].rotSpeed);
 
             WeaponShooter weaponShooter = weaponPrefab.GetComponent<WeaponShooter>();
-            weaponShooter.SetShootForce(weapons[i].shootForce);
+            weaponShooter.SetShootForce(weapons[i].shotForce);
+            weaponShooter.DamageAmount = weapons[i].shotDamage;
 
             weaponPrefab.SetActive(false);
         }

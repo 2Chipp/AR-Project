@@ -31,8 +31,8 @@ public class TrajectoryTracer : MonoBehaviour
     {
         weaponShooter = GetComponent<WeaponShooter>();
         lineRenderer = GetComponent<LineRenderer>();
-        origin = weaponShooter.ShootPoint;
-        shootForce = weaponShooter.ShootForce;
+        origin = weaponShooter.ShotPoint;
+        shootForce = weaponShooter.ShotForce;
         bulletMass = weaponShooter.BulletPrefab.GetComponent<Rigidbody>().mass;
     }
 

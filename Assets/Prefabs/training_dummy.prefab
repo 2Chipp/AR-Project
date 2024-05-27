@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 5360683131785772904}
   - component: {fileID: 5615497917579445399}
   - component: {fileID: 8216108479777985324}
+  - component: {fileID: 2289583039010641648}
   m_Layer: 0
   m_Name: training_dummy
   m_TagString: Target
@@ -122,7 +123,7 @@ Transform:
   m_GameObject: {fileID: 4697017240656324050}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.09, y: 0.09, z: 0.09}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8033125610158513919}
@@ -138,7 +139,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4697017240656324050}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 868018d82fb6a3d49be1b63b6bb94f4f, type: 2}
   m_CullingMode: 0
@@ -163,6 +164,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.7169497, y: 2.1174092, z: 1}
   m_Center: {x: 0.04198344, y: 1.0302106, z: 0}
+--- !u!114 &2289583039010641648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697017240656324050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba1fd25f98b2a614daa4fee198769a7f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  defense: 10
+  movingTarget: 0
+  speed: 0
 --- !u!1 &6774080502169825540
 GameObject:
   m_ObjectHideFlags: 0

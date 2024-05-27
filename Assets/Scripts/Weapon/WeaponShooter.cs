@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WeaponShooter : MonoBehaviour
 {
-    [SerializeField] private Transform shootPoint;
+    [SerializeField] private Transform shotPoint;
     [SerializeField] private GameObject bulletPrefab;
 
     private GameObject[] bulletArray;
@@ -18,23 +18,28 @@ public class WeaponShooter : MonoBehaviour
 
     private EventManager eventManager;
 
-    private float shootForce;
+    private float shotForce;
 
     private bool isSelected;
 
     // DataToTrajectoryTracer ===============
-    public float ShootForce {
-        get { return shootForce; }
-        set { shootForce = value; }        
+    public float ShotForce {
+        get { return shotForce; }
+        set { shotForce = value; }        
     }
-    public Transform ShootPoint
+    public Transform ShotPoint
     {
-        get { return shootPoint; }
+        get { return shotPoint; }
     }
     public GameObject BulletPrefab
     {
         get { return bulletPrefab; }
     }
+
+    // DataToBullet ===========================
+    public float DamageAmount { get; set; }
+
+
 
     void Start()
     {
@@ -55,6 +60,7 @@ public class WeaponShooter : MonoBehaviour
         {
             GameObject bullet = Instantiate(bulletPrefab, Vector3.zero, Quaternion.identity);
             bulletArray[i] = bullet;
+            bulletArray[i].GetComponent<Bullet>().DamageAmount = DamageAmount;
             bulletRb[i] = bullet.GetComponent<Rigidbody>();
             bullet.SetActive(false);
         }
@@ -69,7 +75,7 @@ public class WeaponShooter : MonoBehaviour
 
     public void SetShootForce(float shootForce)
     {
-        ShootForce = shootForce;
+        ShotForce = shootForce;
     }
 
     private void OnDestroy()
@@ -96,10 +102,10 @@ public class WeaponShooter : MonoBehaviour
             bulletArray[bulletIndex].SetActive(true);
             bulletRb[bulletIndex].velocity = Vector3.zero;
 
-            bulletArray[bulletIndex].transform.position = shootPoint.position;
-            bulletArray[bulletIndex].transform.rotation = shootPoint.rotation;
+            bulletArray[bulletIndex].transform.position = shotPoint.position;
+            bulletArray[bulletIndex].transform.rotation = shotPoint.rotation;
 
-            bulletRb[bulletIndex].AddForce(bulletRb[bulletIndex].transform.forward * shootForce, ForceMode.Impulse);
+            bulletRb[bulletIndex].AddForce(bulletRb[bulletIndex].transform.forward * shotForce, ForceMode.Impulse);
 
             StartCoroutine(DisableBullet(bulletIndex));
 

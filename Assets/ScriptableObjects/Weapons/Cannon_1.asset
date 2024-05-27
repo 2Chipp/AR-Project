@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponPrefab: {fileID: 4874677662523531449, guid: 110d035a45a3d9642b0034cbcce8ded1, type: 3}
   health: 0
-  rangeShot: 0
+  shotDamage: 50
   erroRange: 0
-  shootForce: 5
+  shotForce: 10
   explosionForce: 0
   rotSpeed: 400
