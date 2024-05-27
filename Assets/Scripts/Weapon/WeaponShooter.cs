@@ -14,7 +14,7 @@ public class WeaponShooter : MonoBehaviour
     private int bulletIndex;
 
     [SerializeField] private float bulletLifetime = 2f;
-    WaitForSeconds waitForSeconds;
+    private WaitForSeconds waitForSeconds;
 
     private EventManager eventManager;
 
@@ -39,8 +39,14 @@ public class WeaponShooter : MonoBehaviour
     // DataToBullet ===========================
     public float DamageAmount { get; set; }
 
+    private Bullet.BulletData bulletData;
 
 
+    private void Awake()
+    {
+        eventManager = EventManager.eventManager;
+        eventManager.OnShoot += Shoot;
+    }
     void Start()
     {
         Init();
@@ -48,9 +54,6 @@ public class WeaponShooter : MonoBehaviour
 
     void Init()
     {
-        eventManager = EventManager.eventManager;
-        eventManager.OnShoot += Shoot;
-
         waitForSeconds = new WaitForSeconds(bulletLifetime);
 
         bulletArray = new GameObject[bulletCount];
@@ -60,10 +63,17 @@ public class WeaponShooter : MonoBehaviour
         {
             GameObject bullet = Instantiate(bulletPrefab, Vector3.zero, Quaternion.identity);
             bulletArray[i] = bullet;
-            bulletArray[i].GetComponent<Bullet>().DamageAmount = DamageAmount;
+            bulletArray[i].GetComponent<Bullet>()._BulletData = bulletData;
             bulletRb[i] = bullet.GetComponent<Rigidbody>();
             bullet.SetActive(false);
         }
+    }
+    
+    public void SetBulletData(float damageAmount, float explosionRange, float explosionForce)
+    {
+        bulletData.damageAmount = damageAmount;
+        bulletData.explosionRange = explosionRange;
+        bulletData.explosionForce = explosionForce;
     }
 
     IEnumerator DisableBullet(int bulletIndex)

@@ -30,7 +30,7 @@ public class WeaponSelector : MonoBehaviour
 
             WeaponShooter weaponShooter = weaponPrefab.GetComponent<WeaponShooter>();
             weaponShooter.SetShootForce(weapons[i].shotForce);
-            weaponShooter.DamageAmount = weapons[i].shotDamage;
+            weaponShooter.SetBulletData(weapons[i].shotDamage, weapons[i].explosionRange, weapons[i].explosionForce);
 
             weaponPrefab.SetActive(false);
         }

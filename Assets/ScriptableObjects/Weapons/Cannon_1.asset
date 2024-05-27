@@ -15,7 +15,8 @@ MonoBehaviour:
   weaponPrefab: {fileID: 4874677662523531449, guid: 110d035a45a3d9642b0034cbcce8ded1, type: 3}
   health: 0
   shotDamage: 50
+  shotForce: 100
+  explosionForce: 2000
+  explosionRange: 2
   erroRange: 0
-  shotForce: 10
-  explosionForce: 0
   rotSpeed: 400

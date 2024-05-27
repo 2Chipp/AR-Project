@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 5615497917579445399}
   - component: {fileID: 8216108479777985324}
   - component: {fileID: 2289583039010641648}
+  - component: {fileID: 5838810365641245981}
   m_Layer: 0
   m_Name: training_dummy
   m_TagString: Target
@@ -180,6 +181,22 @@ MonoBehaviour:
   defense: 10
   movingTarget: 0
   speed: 0
+--- !u!54 &5838810365641245981
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697017240656324050}
+  serializedVersion: 2
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6774080502169825540
 GameObject:
   m_ObjectHideFlags: 0

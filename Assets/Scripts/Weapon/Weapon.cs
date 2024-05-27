@@ -8,10 +8,14 @@ public class Weapon : ScriptableObject
     public GameObject weaponPrefab;
 
     public float health;
+
     public float shotDamage;
-    public float erroRange;
     public float shotForce;
+
+    public float explosionForce;
     public float explosionRange;
+
+    public float erroRange;
 
     public float rotSpeed;
 

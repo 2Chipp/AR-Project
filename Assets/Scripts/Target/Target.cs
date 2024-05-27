@@ -24,12 +24,6 @@ public class Target : MonoBehaviour, IDamageable
         animator = GetComponent<Animator>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void TakeDamage(float damageAmount)
     {
         hp -= damageAmount - defense;
