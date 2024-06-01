@@ -64,8 +64,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotPoint: {fileID: 8004432214908094084}
-  bulletPrefab: {fileID: 4861643432348583050, guid: 69ceaf346b6bbed4cae2ef2149d1c5f0, type: 3}
-  bulletCount: 10
   bulletLifetime: 2
 --- !u!120 &-1709512032810264399
 LineRenderer:
@@ -179,6 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linePoints: 25
+  lineRange: 1
   timeBetweenPoints: 0.06
 --- !u!1 &8004432214414230899
 GameObject:

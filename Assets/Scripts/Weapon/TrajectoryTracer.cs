@@ -16,6 +16,10 @@ public class TrajectoryTracer : MonoBehaviour
     private int linePoints = 25;
 
     [SerializeField]
+    [Range(0.1f, 5f)]
+    private float lineRange;
+
+    [SerializeField]
     [Range(0.01f, 0.25f)]
     private float timeBetweenPoints = 0.06f;
 
@@ -47,18 +51,22 @@ public class TrajectoryTracer : MonoBehaviour
     private void DrawProjection()
     {
         lineRenderer.enabled = true;
-        lineRenderer.positionCount = Mathf.CeilToInt(linePoints / timeBetweenPoints) + 1;
+        lineRenderer.positionCount = Mathf.CeilToInt(linePoints / timeBetweenPoints);
         Vector3 startPosition = origin.position;
         Vector3 startVelocity = shotForce * origin.forward / bulletMass;
         int i = 0;
         lineRenderer.SetPosition(i, startPosition);
+
         for (float time = 0; time < linePoints; time += timeBetweenPoints)
         {
+            if (time > lineRange) break;
+
             i++;
             Vector3 point = startPosition + time * startVelocity;
             point.y = startPosition.y + startVelocity.y * time + (Physics.gravity.y / 2f * time * time);
 
-            lineRenderer.SetPosition(i, point);
+            lineRenderer.SetPosition(i, point);   
         }
+        lineRenderer.positionCount = i;
     }
 }

@@ -26,7 +26,7 @@ public class Target : MonoBehaviour, IDamageable
 
     public void TakeDamage(float damageAmount)
     {
-        hp -= damageAmount - defense;
+        hp -= Math.Abs(damageAmount - defense);
         if (hp <= 0) Destroy();
     }
 

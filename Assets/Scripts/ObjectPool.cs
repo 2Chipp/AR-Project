@@ -11,7 +11,6 @@ public class ObjectPool : MonoBehaviour
     private List<GameObject> bulletList;
     private int bulletCount = 10;
 
-    private Bullet.BulletData bulletData;
 
     public static ObjectPool instance;
 
@@ -35,16 +34,8 @@ public class ObjectPool : MonoBehaviour
         {
             GameObject bullet = Instantiate(bulletPrefab, Vector3.zero, Quaternion.identity);
             bulletList.Add(bullet);
-            bullet.GetComponent<Bullet>()._BulletData = bulletData;
             bullet.SetActive(false);
         }
-    }
-
-    public void SetBulletData(float damageAmount, float explosionRange, float explosionForce)
-    {
-        bulletData.damageAmount = damageAmount;
-        bulletData.explosionRange = explosionRange;
-        bulletData.explosionForce = explosionForce;
     }
 
     public GameObject GetBullet()
@@ -60,7 +51,6 @@ public class ObjectPool : MonoBehaviour
         }
 
         bullet = Instantiate(bulletPrefab, Vector3.zero, Quaternion.identity);
-        bullet.GetComponent<Bullet>()._BulletData = bulletData;
         return bullet;
     }
 

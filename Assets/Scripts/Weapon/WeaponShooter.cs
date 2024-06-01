@@ -8,6 +8,8 @@ public class WeaponShooter : MonoBehaviour
     private GameObject currentBulletPrefab;
 
     private Dictionary<GameObject, Rigidbody> bulletRbDictionary;
+    private Dictionary<GameObject, Bullet> bulletDataDictionary;
+    private Bullet.BulletData bulletData;
 
     [SerializeField] private float bulletLifetime = 2f;
     private WaitForSeconds waitForSeconds;
@@ -47,6 +49,7 @@ public class WeaponShooter : MonoBehaviour
     {
         waitForSeconds = new WaitForSeconds(bulletLifetime);
         bulletRbDictionary = new Dictionary<GameObject, Rigidbody>();
+        bulletDataDictionary = new Dictionary<GameObject, Bullet>();
         objectPool = ObjectPool.instance;
     }
 
@@ -57,6 +60,13 @@ public class WeaponShooter : MonoBehaviour
         return rb;
     }
 
+    private Bullet AddBulletData(GameObject bullet)
+    {
+        Bullet bulletData = bullet.GetComponent<Bullet>();
+        bulletDataDictionary.Add(bullet, bulletData);
+        return bulletData;
+    }
+
     IEnumerator DisableBullet(GameObject bullet)
     {
         yield return waitForSeconds;
@@ -65,6 +75,12 @@ public class WeaponShooter : MonoBehaviour
             rb.velocity = Vector3.zero;
             objectPool.BackToPool(bullet);
         }
+    }
+    public void SetBulletData(float damageAmount, float explosionRange, float explosionForce)
+    {
+        bulletData.damageAmount = damageAmount;
+        bulletData.explosionRange = explosionRange;
+        bulletData.explosionForce = explosionForce;
     }
 
     public void SetShootForce(float shootForce)
@@ -94,19 +110,27 @@ public class WeaponShooter : MonoBehaviour
         if (isSelected)
         {
             currentBulletPrefab = objectPool.GetBullet();
-            Rigidbody rb;
+            Rigidbody currentRb;
+            Bullet currentBulletData;
 
             if(bulletRbDictionary.TryGetValue(currentBulletPrefab, out Rigidbody _rb))
             {
-                rb = _rb;
+                currentRb = _rb;
             }
-            else rb = AddBulletRb(currentBulletPrefab);
+            else currentRb = AddBulletRb(currentBulletPrefab);
+
+            if (bulletDataDictionary.TryGetValue(currentBulletPrefab, out Bullet _bulletData))
+            {
+                currentBulletData = _bulletData;
+            }
+            else currentBulletData = AddBulletData(currentBulletPrefab);
 
             currentBulletPrefab.SetActive(true);
             currentBulletPrefab.transform.position = shotPoint.position;
             currentBulletPrefab.transform.rotation = shotPoint.rotation;
 
-            rb.AddForce(currentBulletPrefab.transform.forward * shotForce, ForceMode.Impulse);
+            currentBulletData._BulletData = bulletData;
+            currentRb.AddForce(currentBulletPrefab.transform.forward * shotForce, ForceMode.Impulse);
 
             StartCoroutine(DisableBullet(currentBulletPrefab));
         }
@@ -117,18 +141,30 @@ public class WeaponShooter : MonoBehaviour
     {
         if (isSelected)
         {
-            bulletArray[bulletIndex].SetActive(true);
-            bulletRb[bulletIndex].velocity = Vector3.zero;
+            currentBulletPrefab = objectPool.GetBullet();
+            Rigidbody currentRb;
+            Bullet currentBulletData;
 
-            bulletArray[bulletIndex].transform.position = shotPoint.position;
-            bulletArray[bulletIndex].transform.rotation = shotPoint.rotation;
+            if(bulletRbDictionary.TryGetValue(currentBulletPrefab, out Rigidbody _rb))
+            {
+                currentRb = _rb;
+            }
+            else currentRb = AddBulletRb(currentBulletPrefab);
 
-            bulletRb[bulletIndex].AddForce(bulletRb[bulletIndex].transform.forward * shotForce, ForceMode.Impulse);
+            if (bulletDataDictionary.TryGetValue(currentBulletPrefab, out Bullet _bulletData))
+            {
+                currentBulletData = _bulletData;
+            }
+            else currentBulletData = AddBulletData(currentBulletPrefab);
 
-            StartCoroutine(DisableBullet(bulletIndex));
+            currentBulletPrefab.SetActive(true);
+            currentBulletPrefab.transform.position = shotPoint.position;
+            currentBulletPrefab.transform.rotation = shotPoint.rotation;
 
-            if (bulletIndex >= bulletCount - 1) bulletIndex = 0;
-            else bulletIndex++;
+            currentBulletData._BulletData = bulletData;
+            currentRb.AddForce(currentBulletPrefab.transform.forward * shotForce, ForceMode.Impulse);
+
+            StartCoroutine(DisableBullet(currentBulletPrefab));
         }
     }
 #endif
