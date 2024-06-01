@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class WeaponMov : MonoBehaviour
 {
-    [SerializeField] Transform rotTransform;
+    [SerializeField] private Transform rotTransform;
+    [SerializeField] private float minAngle;
+    [SerializeField] private float maxAngle;
 
     private float rotSpeed;
 
@@ -25,7 +27,7 @@ public class WeaponMov : MonoBehaviour
     private Vector3 ClampRot()
     {
         Vector3 tempRot = rotTransform.localEulerAngles;
-        float x = Mathf.Clamp(tempRot.x, 10f, 75f);
+        float x = Mathf.Clamp(tempRot.x, minAngle, maxAngle);
         tempRot = new Vector3(x, tempRot.y, tempRot.z);
         return tempRot;
     }
@@ -38,7 +40,7 @@ public class WeaponMov : MonoBehaviour
             Debug.Log("in rot");
 
             float y = Input.GetAxis("Mouse X") * rotSpeed * Time.deltaTime;
-            float x = -Input.GetAxis("Mouse Y") * rotSpeed * Time.deltaTime;
+            float x = Input.GetAxis("Mouse Y") * rotSpeed * Time.deltaTime;
 
             rotTransform.Rotate(0, y, 0, Space.World);
             rotTransform.Rotate(x, 0, 0, Space.Self);
@@ -46,9 +48,6 @@ public class WeaponMov : MonoBehaviour
             rotTransform.localRotation = Quaternion.Euler(ClampRot());
         }
     }
-
-    //if (touch.phase == TouchPhase.Began) touchStartPos = touch.position;
-            //else if (touch.phase == TouchPhase.Moved) 
 
 #elif UNITY_ANDROID
 

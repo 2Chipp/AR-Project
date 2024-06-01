@@ -7,8 +7,9 @@ public class WeaponSelector : MonoBehaviour
     public Weapon[] weapons;
     private GameObject[] weaponPrefabs;
 
-    
     private int weaponSelectedIndex = 0;
+
+    private ObjectPool objectPool;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +19,8 @@ public class WeaponSelector : MonoBehaviour
 
     private void Init()
     {
+        objectPool = ObjectPool.instance;
+
         weaponPrefabs = new GameObject[weapons.Length];
 
         for (int i = 0; i < weapons.Length; i++)
@@ -30,7 +33,7 @@ public class WeaponSelector : MonoBehaviour
 
             WeaponShooter weaponShooter = weaponPrefab.GetComponent<WeaponShooter>();
             weaponShooter.SetShootForce(weapons[i].shotForce);
-            weaponShooter.SetBulletData(weapons[i].shotDamage, weapons[i].explosionRange, weapons[i].explosionForce);
+            objectPool.SetBulletData(weapons[i].shotDamage, weapons[i].explosionRange, weapons[i].explosionForce);
 
             weaponPrefab.SetActive(false);
         }

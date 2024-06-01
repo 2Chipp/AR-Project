@@ -12,7 +12,7 @@ public class Bullet : MonoBehaviour
 
     [SerializeField] private AnimationCurve damageVsDistanceCurve;
 
-    
+    private bool isExploded;
 
     private void Start()
     {
@@ -28,7 +28,7 @@ public class Bullet : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.name);
+        if (isExploded) return;
         Explode();
     }
 
@@ -60,6 +60,12 @@ public class Bullet : MonoBehaviour
                 rb.AddExplosionForce(explosionForce, transform.position, explosionRange);
             }
         }
+        isExploded = true;
+    }
+
+    private void OnDisable()
+    {
+        isExploded = false;
     }
 
     public struct BulletData
