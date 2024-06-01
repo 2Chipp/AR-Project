@@ -7,7 +7,6 @@ public class WeaponSelector : MonoBehaviour
     public Weapon[] weapons;
     private GameObject[] weaponPrefabs;
 
-    
     private int weaponSelectedIndex = 0;
 
     // Start is called before the first frame update

@@ -8,11 +8,18 @@ public class Bullet : MonoBehaviour
     private float damageAmount;
     private float explosionRange;
     private float explosionForce;
-    public BulletData _BulletData { get; set; }
+    public BulletData _BulletData {
+        set 
+        {
+            damageAmount = value.damageAmount;
+            explosionForce = value.explosionForce;
+            explosionRange = value.explosionRange;
+        } 
+    }
 
     [SerializeField] private AnimationCurve damageVsDistanceCurve;
 
-    
+    private bool isExploded;
 
     private void Start()
     {
@@ -20,15 +27,11 @@ public class Bullet : MonoBehaviour
     }
     private void Init()
     {
-        damageAmount = _BulletData.damageAmount;
-        explosionForce = _BulletData.explosionForce;
-        explosionRange = _BulletData.explosionRange;
 
-        //curve = AnimationCurve.EaseInOut()
     }
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.name);
+        if (isExploded) return;
         Explode();
     }
 
@@ -50,16 +53,21 @@ public class Bullet : MonoBehaviour
                 if (collider.gameObject.TryGetComponent<IDamageable>(out IDamageable target))
                 {
                     target.TakeDamage(totalDamage);
-                    Debug.Log($"CurvePoint : {pointToEvaluate}, Distance {distance}, Total Damage : {damageVsDistanceCurve.Evaluate(pointToEvaluate) * damageAmount}");
                 }
             }
 
-            Rigidbody rb = collider.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.AddExplosionForce(explosionForce, transform.position, explosionRange);
-            }
+            //Rigidbody rb = collider.GetComponent<Rigidbody>();
+            //if (rb != null)
+            //{
+            //    rb.AddExplosionForce(explosionForce, transform.position, explosionRange);
+            //}
         }
+        isExploded = true;
+    }
+
+    private void OnDisable()
+    {
+        isExploded = false;
     }
 
     public struct BulletData

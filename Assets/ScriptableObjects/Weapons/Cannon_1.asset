@@ -16,7 +16,7 @@ MonoBehaviour:
   health: 0
   shotDamage: 50
   shotForce: 100
-  explosionForce: 2000
+  explosionForce: 500
   explosionRange: 2
   erroRange: 0
   rotSpeed: 400

@@ -17,7 +17,7 @@ MonoBehaviour:
     ufoLicenseKey: QWNlUGZ2di8vLy8vQUFBQUtBRGNjcGxoQ1VTVm0xeFMzSFNvQjhBRHAzSmdqcHgreVJKL2FNTlQ0TUFuTGRYTG9NVFV5R0Y3THJucjVxWGp5MXZnalZOcHJ2Uk1nbGt6SEJwaDNtV0VPeDFSMm5kUFRQNDRmb0taQ0NPSHBDV0VVYnhXQzdXL08rWmJUVFg5alYwMnkyeHhvaHVuRnhxMzRoSFFwZWlEVHhVUnB5Mmd2T2tiT1BjMmptVU1wSjZjZ3VraDUzQ0NFQmRXclpjZVppNkg3TnJGOFZZTnNQa0FJWFExckVkQzhUNHpzNTZQb2ZTS3hNYWhOd3pobHJHaHduazIwWjZuMkRrS2J3VjdzcVlpSjJWVnJSVmUrZVVpdHRaekJrNDR4U2crZ2wzUG1mWUJTQjVrODRCRGtUdW16L3VjaUdCaVpLUVZ4clpIQjY2SURDNFVVTmVINHIzbXVWV2pFMkY1UlVGb1ROU3VOYUllaFp4OWhPWXg=
     delayedInitialization: 0
     cameraFocusModeSetting: 2
-    cameraDeviceModeSetting: -1
+    cameraDeviceModeSetting: -3
     maxSimultaneousImageTargets: 2
     virtualSceneScaleFactor: 1
     modelTargetRecoWhileExtendedTracked: 1
@@ -40,9 +40,9 @@ MonoBehaviour:
     videoBackgroundEnabled: 1
   deviceTracker:
     autoStartTracker: 1
-    arcoreRequirement: 1
-    autoImportArcore: 0
-    thirdPartyARCoreClientDetected: 0
+    arcoreRequirement: 2
+    autoImportArcore: 1
+    thirdPartyARCoreClientDetected: 1
   playmode:
     mRecordingPath: 
     playModeType: 0
