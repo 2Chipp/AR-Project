@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linePoints: 25
-  lineRange: 1
+  lineRange: 2.5
   timeBetweenPoints: 0.06
 --- !u!1 &8004432214414230899
 GameObject:

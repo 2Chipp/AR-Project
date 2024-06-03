@@ -26,6 +26,15 @@ public class TrajectoryTracer : MonoBehaviour
     private float shotForce;
     private float bulletMass;
 
+    //==========================
+
+    [SerializeField]
+    private int ringCount;
+
+    [SerializeField]
+    private GameObject ringPrefab;
+    [SerializeField] private GameObject[] ringPrefabArray;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,6 +49,12 @@ public class TrajectoryTracer : MonoBehaviour
         origin = weaponShooter.ShotPoint;
         shotForce = weaponShooter.ShotForce;
         bulletMass = objectPool.BulletPrefab.GetComponent<Rigidbody>().mass;
+
+        ringPrefabArray = new GameObject[ringCount];
+        for (int i = 0; i < ringPrefabArray.Length; i++)
+        {
+            ringPrefabArray[i] = Instantiate(ringPrefab, Vector3.up*100, Quaternion.identity);
+        }
     }
 
     // Update is called once per frame
@@ -50,6 +65,9 @@ public class TrajectoryTracer : MonoBehaviour
 
     private void DrawProjection()
     {
+        int ringArrayIndex = 0;
+        float spaceBetweenRings = lineRange / (ringCount + 1) ;
+        float spaceBetweenRingsSum = spaceBetweenRings;
         lineRenderer.enabled = true;
         lineRenderer.positionCount = Mathf.CeilToInt(linePoints / timeBetweenPoints);
         Vector3 startPosition = origin.position;
@@ -65,7 +83,16 @@ public class TrajectoryTracer : MonoBehaviour
             Vector3 point = startPosition + time * startVelocity;
             point.y = startPosition.y + startVelocity.y * time + (Physics.gravity.y / 2f * time * time);
 
-            lineRenderer.SetPosition(i, point);   
+            lineRenderer.SetPosition(i, point);
+
+            while (time > spaceBetweenRingsSum)
+            {
+                Debug.Log($"Index = {ringArrayIndex}, SBRSum = {spaceBetweenRingsSum}, i = {i}");
+                ringPrefabArray[ringArrayIndex].transform.position = point;
+                ringArrayIndex++;
+
+                spaceBetweenRingsSum = spaceBetweenRings * (ringArrayIndex + 1);
+            }
         }
         lineRenderer.positionCount = i;
     }

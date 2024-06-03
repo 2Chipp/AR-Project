@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
+    [SerializeField] GameObject explosionPrefab;
+
     private float damageAmount;
     private float explosionRange;
     private float explosionForce;
@@ -21,18 +23,22 @@ public class Bullet : MonoBehaviour
 
     private bool isExploded;
 
-    private void Start()
-    {
-        Init();
-    }
-    private void Init()
-    {
+    // =================
 
+    [SerializeField] private float timeBetweenPoints;
+    private float time;
+    private float timeDelay;
+    private WaitForSeconds waitForSeconds;
+
+    private void Update()
+    {
+        if (isExploded) return;
+        CheckCollision();
     }
     private void OnCollisionEnter(Collision collision)
     {
-        if (isExploded) return;
-        Explode();
+        //if (isExploded) return;
+        //Explode();
     }
 
     private void Explode()
@@ -62,7 +68,41 @@ public class Bullet : MonoBehaviour
             //    rb.AddExplosionForce(explosionForce, transform.position, explosionRange);
             //}
         }
-        isExploded = true;
+    }
+
+    private void CheckCollision()
+    {
+        if (Time.unscaledTime > time)
+        {
+            time += timeBetweenPoints;
+
+            Vector3 velocity = GetComponent<Rigidbody>().velocity;
+            Transform currentPos = transform;
+            Vector3 nextPos = currentPos.position + (velocity * timeBetweenPoints);
+            currentPos.LookAt(nextPos);
+
+            float rayDistance = Vector3.Distance(currentPos.position, nextPos);
+            Ray ray = new Ray(currentPos.position, currentPos.forward);
+
+            if (Physics.Raycast(ray, out RaycastHit hit, rayDistance))
+            {
+                timeDelay = Vector3.Distance(currentPos.position, hit.point) / velocity.magnitude;
+                waitForSeconds = new WaitForSeconds(timeDelay);
+                Debug.Log($"Distance: {rayDistance}, Collision in {hit.point} in {timeDelay} seconds");
+                isExploded = true;
+                StartCoroutine(Collision());
+            }
+        }
+
+    }
+
+    private IEnumerator Collision()
+    {
+        yield return waitForSeconds;
+        Instantiate(explosionPrefab, transform.position, Quaternion.identity);
+        Debug.Log("Boom!");
+
+        Explode();
     }
 
     private void OnDisable()
