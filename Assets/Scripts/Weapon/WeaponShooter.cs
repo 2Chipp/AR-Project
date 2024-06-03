@@ -132,6 +132,9 @@ public class WeaponShooter : MonoBehaviour
             currentBulletData._BulletData = bulletData;
             currentRb.AddForce(currentBulletPrefab.transform.forward * shotForce, ForceMode.Impulse);
 
+            currentRb.AddForce(WingController.WingDirection.forward * WingController.WingForce, ForceMode.Force);
+            Debug.Log(" Wing force: " + WingController.WingForce);
+
             StartCoroutine(DisableBullet(currentBulletPrefab));
         }
     }
@@ -142,27 +145,19 @@ public class WeaponShooter : MonoBehaviour
         if (isSelected)
         {
             currentBulletPrefab = objectPool.GetBullet();
-            Rigidbody currentRb;
-            Bullet currentBulletData;
+            Rigidbody rb;
 
             if(bulletRbDictionary.TryGetValue(currentBulletPrefab, out Rigidbody _rb))
             {
-                currentRb = _rb;
+                rb = _rb;
             }
-            else currentRb = AddBulletRb(currentBulletPrefab);
-
-            if (bulletDataDictionary.TryGetValue(currentBulletPrefab, out Bullet _bulletData))
-            {
-                currentBulletData = _bulletData;
-            }
-            else currentBulletData = AddBulletData(currentBulletPrefab);
+            else rb = AddBulletRb(currentBulletPrefab);
 
             currentBulletPrefab.SetActive(true);
             currentBulletPrefab.transform.position = shotPoint.position;
             currentBulletPrefab.transform.rotation = shotPoint.rotation;
 
-            currentBulletData._BulletData = bulletData;
-            currentRb.AddForce(currentBulletPrefab.transform.forward * shotForce, ForceMode.Impulse);
+            rb.AddForce(currentBulletPrefab.transform.forward * shotForce, ForceMode.Impulse);
 
             StartCoroutine(DisableBullet(currentBulletPrefab));
         }
