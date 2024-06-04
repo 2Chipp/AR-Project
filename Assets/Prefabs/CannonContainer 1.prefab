@@ -78,10 +78,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   linePoints: 25
-  lineRange: 2.5
+  lineRange: 2
   timeBetweenPoints: 0.1
-  ringCount: 10
-  ringPrefab: {fileID: 4861643432348583050, guid: d712e43ffddb0a043a714f1d01159c5d, type: 3}
+  ringCount: 5
+  ringPrefab: {fileID: 3052167853682310403, guid: bfc81c22cd8bd1e45b793fdf93d87791, type: 3}
+  ringPrefabArray: []
 --- !u!120 &929628635844002383
 LineRenderer:
   m_ObjectHideFlags: 0

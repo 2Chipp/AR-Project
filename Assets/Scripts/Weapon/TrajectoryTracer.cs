@@ -11,30 +11,25 @@ public class TrajectoryTracer : MonoBehaviour
     private LineRenderer lineRenderer;
     private Transform origin;
 
-    [SerializeField]
-    [Range(10, 100)]
-    private int linePoints = 25;
+    [Header("Trace Line")]
 
-    [SerializeField]
-    [Range(0.1f, 5f)]
-    private float lineRange;
-
-    [SerializeField]
-    [Range(0.01f, 0.25f)]
-    private float timeBetweenPoints = 0.06f;
+    [SerializeField, Range(10, 100)] private int linePoints = 25;
+    [SerializeField, Range(0.1f, 5f)] private float lineRange;
+    [SerializeField, Range(0.01f, 0.25f)] private float timeBetweenPoints = 0.06f;
 
     private float shotForce;
     private float bulletMass;
 
     //==========================
 
-    [SerializeField]
-    private int ringCount;
+    [Header("Rings")]
 
-    [SerializeField]
-    private GameObject ringPrefab;
+    [SerializeField] private int ringCount;
+    [SerializeField] private GameObject ringPrefab;
     [SerializeField] private GameObject[] ringPrefabArray;
 
+    private Transform ringTransform;
+    private Transform ringTarget;
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +44,8 @@ public class TrajectoryTracer : MonoBehaviour
         origin = weaponShooter.ShotPoint;
         shotForce = weaponShooter.ShotForce;
         bulletMass = objectPool.BulletPrefab.GetComponent<Rigidbody>().mass;
+        ringTransform = new GameObject().transform;
+        ringTarget = new GameObject().transform;
 
         ringPrefabArray = new GameObject[ringCount];
         for (int i = 0; i < ringPrefabArray.Length; i++)
@@ -66,12 +63,16 @@ public class TrajectoryTracer : MonoBehaviour
     private void DrawProjection()
     {
         int ringArrayIndex = 0;
-        float spaceBetweenRings = lineRange / (ringCount + 1) ;
-        float spaceBetweenRingsSum = spaceBetweenRings;
+
+        float spaceBetweenRings = lineRange / (ringCount + 1);
+        float spaceBetweenRingsSummation = spaceBetweenRings;
+
         lineRenderer.enabled = true;
         lineRenderer.positionCount = Mathf.CeilToInt(linePoints / timeBetweenPoints);
+
         Vector3 startPosition = origin.position;
         Vector3 startVelocity = shotForce * origin.forward / bulletMass;
+
         int i = 0;
         lineRenderer.SetPosition(i, startPosition);
 
@@ -85,13 +86,23 @@ public class TrajectoryTracer : MonoBehaviour
 
             lineRenderer.SetPosition(i, point);
 
-            while (time > spaceBetweenRingsSum)
+            if (time > spaceBetweenRingsSummation) // Add rings
             {
-                Debug.Log($"Index = {ringArrayIndex}, SBRSum = {spaceBetweenRingsSum}, i = {i}");
-                ringPrefabArray[ringArrayIndex].transform.position = point;
+                Vector3 ringPoint = startPosition + spaceBetweenRingsSummation * startVelocity;
+                ringPoint.y = startPosition.y + startVelocity.y * spaceBetweenRingsSummation + (Physics.gravity.y / 2f * spaceBetweenRingsSummation * spaceBetweenRingsSummation);
+                
+                Vector3 _ringTarget = startPosition + (spaceBetweenRingsSummation + 0.01f ) * startVelocity;
+                _ringTarget.y = startPosition.y + startVelocity.y * (spaceBetweenRingsSummation + 0.01f) + (Physics.gravity.y / 2f * (spaceBetweenRingsSummation + 0.01f) * (spaceBetweenRingsSummation + 0.01f));
+
+                ringTransform.position = ringPoint;
+                ringTarget.position = _ringTarget;
+                ringTransform.LookAt(ringTarget);
+                                
+                ringPrefabArray[ringArrayIndex].transform.position = ringTransform.position;
+                ringPrefabArray[ringArrayIndex].transform.rotation = ringTransform.rotation;
                 ringArrayIndex++;
 
-                spaceBetweenRingsSum = spaceBetweenRings * (ringArrayIndex + 1);
+                spaceBetweenRingsSummation = spaceBetweenRings * (ringArrayIndex + 1);
             }
         }
         lineRenderer.positionCount = i;
